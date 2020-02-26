@@ -9,13 +9,17 @@
 import UIKit
 
 class ViewController: UIViewController {
-   
+    @IBOutlet weak var lblOutput: UILabel!
+    
     var numberOnScreen: Double = 0;
     var previousNumber: Double = 0;
     var performingMath = false;
+    var sinus: Double = 0;
+    var cosinus: Double = 0;
+    var tangent: Double = 0;
+    var pi: Double = 0;
     var operation = 0;
-   
-   @IBOutlet weak var lblOutput: UILabel!
+
     
     @IBAction func btnNumbers(_ sender: UIButton) {
         if performingMath == true{
@@ -30,12 +34,27 @@ class ViewController: UIViewController {
     
     
     @IBAction func btnOperations(_ sender: UIButton) {
+
         
-        if(lblOutput.text != "" && sender.tag != 11 && sender.tag != 18){
+        if(lblOutput.text != "0" && sender.tag != 11 && sender.tag != 18){
             
             previousNumber = Double(lblOutput.text!)!
+            operation = sender.tag
             
-            if(sender.tag == 14){ // Divide
+            if(sender.tag == 12){ // Sign
+                if(previousNumber > 0){
+                    previousNumber *= -1;
+                    lblOutput.text = String(previousNumber);
+                }else if(previousNumber < 0 ){
+                    previousNumber = (0 - previousNumber);
+                }
+                
+            }else if(operation == 13){ // Percent
+                performingMath = true;
+                numberOnScreen = Double(lblOutput.text!)!
+                lblOutput.text = String(numberOnScreen * 0.01)
+            }
+            else if(sender.tag == 14){ // Divide
                 lblOutput.text = "/"
                 
             }else if(sender.tag == 15){// Multiply
@@ -44,14 +63,18 @@ class ViewController: UIViewController {
             }else if(sender.tag == 16){// Subtract
                 lblOutput.text = "-"
                 
-            }else if(sender.tag == 17){// Add
-                lblOutput.text = "+"
             }
-            operation = sender.tag
+           
+            
+            
             performingMath = true;
+            
+            
         }
+            
         else if sender.tag == 18{
-            if operation == 14{
+
+             if operation == 14{
                 lblOutput.text = String(previousNumber / numberOnScreen)
 
             }
@@ -66,8 +89,24 @@ class ViewController: UIViewController {
             else if operation == 17{
                 lblOutput.text = String(previousNumber + numberOnScreen)
             }
-        }else if sender.tag == 11{
-            lblOutput.text = ""
+            
+        }
+            
+            
+            else if(sender.tag == 19){
+            lblOutput.text = "Sin(";
+            performingMath = true;
+                   }
+            else if(sender.tag == 20){
+            lblOutput.text = "Cos(";
+            performingMath = true;
+                   }
+            else if(sender.tag == 21){
+                       lblOutput.text = "Tan(";
+            performingMath = true;
+                   }
+        else if sender.tag == 11{
+            lblOutput.text = "0"
             previousNumber = 0;
             numberOnScreen = 0;
             operation = 0;
